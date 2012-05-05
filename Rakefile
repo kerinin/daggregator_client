@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "daggregator-rails"
   gem.homepage = "http://github.com/kerinin/daggregator-rails"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Easily push data from Rails to Daggregator}
+  gem.description = %Q{Provides model bindings for ActiveModel/ActiveRecord classes to automatically push attributes and relationships to daggregator as keys and flows}
   gem.email = "kerinin@gmail.com"
   gem.authors = ["Ryan Michael"]
   # dependencies defined in Gemfile
