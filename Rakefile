@@ -14,10 +14,10 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "daggregator-rails"
-  gem.homepage = "http://github.com/kerinin/daggregator-rails"
+  gem.name = "daggregator_client"
+  gem.homepage = "http://github.com/kerinin/daggregator_client"
   gem.license = "MIT"
-  gem.summary = %Q{Easily push data from Rails to Daggregator}
+  gem.summary = %Q{Easily push data from to Daggregator}
   gem.description = %Q{Provides model bindings for ActiveModel/ActiveRecord classes to automatically push attributes and relationships to daggregator as keys and flows}
   gem.email = "kerinin@gmail.com"
   gem.authors = ["Ryan Michael"]
@@ -43,7 +43,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "daggregator-rails #{version}"
+  rdoc.title = "daggregator_client #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

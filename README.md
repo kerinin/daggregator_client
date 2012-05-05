@@ -1,4 +1,4 @@
-# daggregator-rails
+# daggregator_client
 
 Model bindings to aggregate Rails Models to a daggregator server
 
@@ -6,7 +6,7 @@ Model bindings to aggregate Rails Models to a daggregator server
 
 Just add it to your `Gemfile` and `bundle`
 
-    gem "daggregator-rails"
+    gem "daggregator_client"
 
     bundle install
 
@@ -41,7 +41,7 @@ data.
 
 ## Use
 
-daggregator-rails maps attributes on your models to keys on daggregator
+`daggregator_client` maps attributes on your models to keys on daggregator
 nodes and `has_many` relationships between your models to daggregator flows.
 We'll take care of keeping your attibutes and relationships in sync with
 the server, all you need to do is specify which attributes and relationships
@@ -121,7 +121,7 @@ This setup will will allow you to execute the following queries on your models:
 ```
 
 
-## Contributing to daggregator-rails
+## Contributing to daggregator_client
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
