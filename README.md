@@ -25,6 +25,8 @@ class User
 
   has_many :postings
   has_many :conversations, :through => :postings
+  has_many :friendings
+  has_many :friends, :through => :friendings
 
   aggregate_to do |node|
     node.key :popularity                            # Maps user.popularity to nod[:popularity]
@@ -36,6 +38,13 @@ class User
     node.flow_to :conversations, :as => :thread     # Map conversations relationship to flows
                                                     # Since converstions map to two nodes (see below), we must
                                                     # specify which node type we want to flow to
+  end
+
+  aggregate_to(:friend) do |node|
+    node.key :friends_age, :from => :age
+    node.key :friends_popularity, :from => :popularity
+    
+    node.flow_to :friends
   end
 end
 ```
@@ -71,12 +80,15 @@ This setup will will allow you to execute the following queries on your models:
 @user.aggregate(:count, :type => :contrib)          # Counts the number of conversations a user has contributed to
 @user.aggregate(:average, 'likes')                  # The average number of 'likes' for conversations the user has contributed to
 @user.aggregate(:sum, 'posting_count')              # The total number of posts in conversations the user has contributed to
+@user.aggregate(:average, 'friends_popularity')     # The average popularity of a user's friends
+@user.aggregate(:sum, 'friends_age')                # The cumulative age of a user's friends
 
 @conversation(:count, :type => 'User')              # Counts the users who have contributed to the conversation
 @conversation(:count, :type => 'Thread')            # The sum of the number of conversations contributed to by all the conversation's contributors
 @conversation(:average, 'user_age')
 @conversation(:average, 'friend_count')                              
 @conversation(:average, 'thread_count')             # The average number of postings for conversations which share a user with this one
+@conversation(:average, 'friends_age')              # The average age of the friends of users contributing to the conversation
 ```
 
 
