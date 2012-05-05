@@ -3,7 +3,7 @@ class Daggregator::Configuration
 
   def initialize(options={})
     defaults = {
-      # Defaults heer
+      # Defaults here
     }
     options.merge! defaults
     @server = options[:server]
