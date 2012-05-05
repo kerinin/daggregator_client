@@ -21,21 +21,21 @@ you want to track.
 ``` ruby
 # app/models/user.rb
 class User
-  include Daggregate                                      # Include the DSL
+  include Daggregate                                # Include the DSL
 
   has_many :postings
   has_many :conversations, :through => :postings
 
   aggregate_to do |node|
-    node.key :popularity                                  # Maps user.popularity to nod[:popularity]
-    node.key :user_age, :from => :age                     # Maps user.age to node[:user_age]
-    node.key :friend_count do                             # Block syntax.  Assigns the result of executing the block in
-      friends.count                                       # instance's scope to the key specified (friend_count)
+    node.key :popularity                            # Maps user.popularity to nod[:popularity]
+    node.key :user_age, :from => :age               # Maps user.age to node[:user_age]
+    node.key :friend_count do                       # Block syntax.  Assigns the result of executing the block in
+      friends.count                                 # instance's scope to the key specified (friend_count)
     end
     
-    node.flow_to :conversations, :as => :thread           # Map conversations relationship to flows
-                                                          # Since converstions map to two nodes (see below), we must
-                                                          # specify which node type we want to flow to
+    node.flow_to :conversations, :as => :thread     # Map conversations relationship to flows
+                                                    # Since converstions map to two nodes (see below), we must
+                                                    # specify which node type we want to flow to
   end
 end
 ```
@@ -48,19 +48,19 @@ class Conversation
   has_many :postings
   has_many :users, :through => :postings
 
-  aggregate_to(:contrib) do |node|                        # Passing an argument adds a key {:type => :contrib} to the node. Defaults to class name
-    node.identifier do |conversation|                     # Constructe node identifier a block. The model instance will be passed
-      "contribution_to_#{conversation.id}"                # to the block.
-    end                                                   # Defaults to the node type and instance id (ie Conversation_3984)
+  aggregate_to(:contrib) do |node|                  # Passing an argument adds a key {:type => :contrib} to the node. Defaults to class name
+    node.identifier do |conversation|               # Constructe node identifier a block. The model instance will be passed
+      "contribution_to_#{conversation.id}"          # to the block.
+    end                                             # Defaults to the node type and instance id (ie Conversation_3984)
 
     node.key(:thread_count) { postings.count }
     node.key :likes
 
-    node.flow_to :users                                   # Simplified flow syntax, since users only map to a single node per instance
+    node.flow_to :users                             # Simplified flow syntax, since users only map to a single node per instance
   end
 
-  aggregate_to('Thread') do |node|                        # Multiple nodes can be created, but they must have different types (:contribution != 'Thread')
-    node.identifier lambda {|c| "thread_#{c.id}"}         # Construct node identifier using the passed lambda
+  aggregate_to('Thread') do |node|                  # Multiple nodes can be created, but they must have different types (:contribution != 'Thread')
+    node.identifier lambda {|c| "thread_#{c.id}"}   # Construct node identifier using the passed lambda
   end
 end
 ```
@@ -68,15 +68,15 @@ end
 This setup will will allow you to execute the following queries on your models:
 
 ``` ruby
-@user.aggregate(:count, :type => :contrib)                # Counts the number of conversations a user has contributed to
-@user.aggregate(:average, 'likes')                        # The average number of 'likes' for conversations the user has contributed to
-@user.aggregate(:sum, 'posting_count')                    # The total number of posts in conversations the user has contributed to
+@user.aggregate(:count, :type => :contrib)          # Counts the number of conversations a user has contributed to
+@user.aggregate(:average, 'likes')                  # The average number of 'likes' for conversations the user has contributed to
+@user.aggregate(:sum, 'posting_count')              # The total number of posts in conversations the user has contributed to
 
-@conversation(:count, :type => 'User')                    # Counts the users who have contributed to the conversation
-@conversation(:count, :type => 'Thread')                  # The sum of the number of conversations contributed to by all the conversation's contributors
+@conversation(:count, :type => 'User')              # Counts the users who have contributed to the conversation
+@conversation(:count, :type => 'Thread')            # The sum of the number of conversations contributed to by all the conversation's contributors
 @conversation(:average, 'user_age')
-@conversation(:average, 'friend_count')                                    
-@conversation(:average, 'thread_count')                   # The average number of postings for conversations which share a user with this one
+@conversation(:average, 'friend_count')                              
+@conversation(:average, 'thread_count')             # The average number of postings for conversations which share a user with this one
 ```
 
 
