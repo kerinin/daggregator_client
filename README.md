@@ -10,6 +10,35 @@ Just add it to your `Gemfile` and `bundle`
 
     bundle install
 
+## Why should I use Daggregator instead of SQL?
+
+Most of what Daggregator does can be accomplished using SQL joins and
+aggregation functions, so why would you bother with another service?
+
+In cases where the relationships between object types are simple and you
+know before hand what types of data you need to aggregate, you probably
+shouldn't.  Daggregator provides two benefits: performance with complicated
+relationship structures and flexibility in constructing queries.
+
+Daggregator stores data in a graph database which is optimized for subgraph
+queries.  What this means is that if you're dealing with a lot of data and
+your relationships are nested (user -> account -> posts -> comments -> likes),
+Daggregator may be better at handling aggregation than SQL.  For instance 
+if you want to find out how many likes a user's comments get, Daggregator's
+syntax may be easier than attempting to join through 4 associations.
+
+The second strength of Daggregator is that it allows you to quickly explore
+what types of data may be useful.  In the example above, defining the join
+model betwen a user and a group of likes requires you to know all the
+intermediate associations; with daggregator you simply query the user
+class for the average number of likes.
+
+There are also cases where data needs to be aggregated across database
+instances (sharded databases, or heterogenous data stores (MySQL/Redis/Mongo).
+In this case, Daggregator provides a convenient way to combine important
+data.
+
+
 ## Use
 
 daggregator-rails maps attributes on your models to keys on daggregator
