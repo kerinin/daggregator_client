@@ -32,7 +32,7 @@ module Daggregator
       )
     end
 
-    def put_node(node_id, key_hash)
+    def put_node(node_id, key_hash={})
       connection.put(
         "/nodes/#{node_id}.json", 
         key_hash

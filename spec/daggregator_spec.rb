@@ -51,6 +51,11 @@ describe Daggregator do
         @c.should_receive(:put).with('/nodes/foo.json', {:bar => 1, :baz => 2})
         subject.put_node('foo', {:bar => 1, :baz => 2})      
       end
+
+      it "accepts empty hash" do
+        @c.should_receive(:put).with('/nodes/foo.json', {})
+        subject.put_node('foo')
+      end
     end
 
     describe "put_flow" do

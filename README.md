@@ -39,12 +39,45 @@ In this case, Daggregator provides a convenient way to combine important
 data.
 
 
-## Use
+## Basic Use
 
-`daggregator_client` maps attributes on your models to keys on daggregator
+`daggregator_client` provides a basic wrapper around the JSON REST calls.  
+The first thing you'll need to do is to set up some basic configuration
+(if you're using Rails, this should go in an initializer):
+
+``` ruby
+Daggregator.configue do |config|
+  config.server = 'my.daggregator.com'      # The hostname of your daggregator server
+  config.port = '3000'                      # Defaults to 80
+end
+```
+
+Now you're ready to go!  The `Daggregator` module provides methods for all
+the API endpoints:
+
+``` ruby
+Daggregator.get_node 'foo'
+Daggregator.get_aggregates 'foo', 'sum', ['key1', 'key2']
+Daggregator.put_node 'foo', {'key1' => 1, 'key2' => 3}
+Daggregator.put_flow 'source', ['target1', 'target2']
+Daggregator.delete_key 'foo', 'key1'
+Daggregator.delete_flow 'source', 'target'
+Daggregator.delete_key 'foo', 'key1'
+```
+
+The response from these functions will either be a hash (see the
+[Daggregator API](https://github.com/kerinin/daggregator) for the structure
+of the responses) or an exception.  `daggregator-client` uses `rest-client`
+for transport; see [their documentation](https://github.com/archiloque/rest-client)
+for a list of the exceptions which will be raised on non-200 responses.
+
+
+## Model DSL Use (pending)
+
+If you're using ActiveModel-esque models, `daggregator-client` provides a
+DSL for mapping attributes on your models to keys on daggregator
 nodes and `has_many` relationships between your models to daggregator flows.
-We'll take care of keeping your attibutes and relationships in sync with
-the server, all you need to do is specify which attributes and relationships
+All you need to do is specify which attributes and relationships
 you want to track.
 
 ``` ruby
