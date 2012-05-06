@@ -46,7 +46,7 @@ The first thing you'll need to do is to set up some basic configuration
 (if you're using Rails, this should go in an initializer):
 
 ``` ruby
-Daggregator.configue do |config|
+Daggregator.configure do |config|
   config.server = 'my.daggregator.com'      # The hostname of your daggregator server
   config.port = '3000'                      # Defaults to 80
 end
@@ -57,7 +57,7 @@ the API endpoints:
 
 ``` ruby
 Daggregator.get_node 'foo'
-Daggregator.get_aggregates 'foo', 'sum', ['key1', 'key2']
+Daggregator.get_aggregates 'foo', 'sum', ['key1', 'key2']  # :sum / :count (more to come)
 Daggregator.put_node 'foo', {'key1' => 1, 'key2' => 3}
 Daggregator.put_flow 'source', ['target1', 'target2']
 Daggregator.delete_key 'foo', 'key1'
@@ -83,7 +83,7 @@ you want to track.
 ``` ruby
 # app/models/user.rb
 class User
-  include Daggregate                                # Include the DSL
+  include Daggregator::Model                        # Include the DSL
 
   has_many :postings
   has_many :conversations, :through => :postings
