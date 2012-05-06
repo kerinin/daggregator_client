@@ -64,5 +64,26 @@ describe Daggregator do
         subject.put_flow('source', ['target1', 'target2'])
       end
     end
+
+    describe "delete_key" do
+      it "calls connection" do
+        @c.should_receive(:delete).with('/nodes/foo/key/bar.json')
+        subject.delete_key('foo', 'bar')
+      end
+    end
+
+    describe "delete_flow" do
+      it "calls connection" do
+        @c.should_receive(:delete).with('/nodes/source/flow_to/target.json')
+        subject.delete_flow('source', 'target')
+      end
+    end
+
+    describe "delete_node" do
+      it "calls connection" do
+        @c.should_receive(:delete).with('/nodes/foo.json')
+        subject.delete_node('foo')
+      end
+    end
   end
 end
