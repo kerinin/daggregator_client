@@ -48,9 +48,10 @@ describe Daggregator::Model::GraphBuilder do
       subject.flows['foo'].should be_a(Array)
     end
 
-    it "defaults to key" do
+    it "defaults to default" do
+      # NOTE: this uses the node type named after the target's class name
       subject.flow_to(:foo)
-      subject.flows['foo'].should include('foo')
+      subject.flows['foo'].should include('default')
     end
 
     it "creates flow with :as" do

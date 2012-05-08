@@ -53,7 +53,7 @@ describe Daggregator::Model do
     end
 
     it "creates flows for renamed associations" do
-      subject.to_flows_for('TestModel').should include('two_1')
+      subject.to_flows_for('TestModel').should include('identifier_two')
     end
   end
 end

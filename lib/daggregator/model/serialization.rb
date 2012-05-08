@@ -10,15 +10,21 @@ module Daggregator::Model::Serialization
   def to_flows_for(type)
     type = type.to_s
     flows = []
-    daggregator_options[type].flows.each_key do |association_name|
+    daggregator_options[type].flows.each_pair do |association_name, related_types|
+      # association_name is the model association which returns related instances
       flows += send(association_name).map do |associated|
-        associated_identifiers_for(type, association_name)
+        # Construct the identifiers for related instance `associated`, given node types
+        associated_identifiers_for(associated, related_types)
       end
     end
+    flows.flatten.uniq
   end
 
   def identifier_for(type)
     type = type.to_s
+    if type == 'default'
+      type = self.class.name
+    end
     instance_eval &self.class.daggregator_options[type].identifier_proc
   end
   
@@ -29,10 +35,8 @@ module Daggregator::Model::Serialization
     self.class.daggregator_options
   end
 
-  def associated_identifiers_for(type, association_name)
-    type = type.to_s
-    associated_types = self.class.daggregator_options[type].flows[association_name]
-    associated_types.map {|association_name| send(type).identifier_for(type) }
+  def associated_identifiers_for(associated, related_types)
+    related_types.map {|type| associated.identifier_for(type) }
   end
 
   def node_data_for(type)

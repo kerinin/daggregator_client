@@ -11,8 +11,12 @@ describe Daggregator::Model::Serialization do
         @id = id
       end
 
+      def property
+        'value'
+      end
+
       def associated
-        [1..3].map {|i| TestClass.new(i) }
+        (1..3).to_a.map {|i| TestClass.new(i) }
       end
     end
   end
@@ -63,12 +67,49 @@ describe Daggregator::Model::Serialization do
   end
 
   describe "identifier_for" do
-    it "evaluates identifier proc in instance's scope"
+    before(:each) do
+      TestClass.aggregate_to do |node|
+        node.identifier(:foo)
+      end
+    end
+    subject { TestClass.new(3) }
+
+    it "evaluates identifier proc in instance's scope" do
+      subject.identifier_for('TestClass').should == 'foo_3'
+    end
   end
 
   describe "node_data_for" do
-    it "returns a hash for each key"
+    before(:each)  do
+      TestClass.aggregate_to do |node|
+        node.key :property
+        node.key :foo, :from => :property
+        node.key :bar do
+          property
+        end
+      end
+      TestClass.aggregate_to(:custom) do |node| end;
+    end
+    subject { TestClass.new(3) }
 
-    it "calls each key's proc in the instance's scope"
+    it "returns a hash for default type" do
+      subject.node_data_for('TestClass').should be_a(Hash)
+    end
+
+    it "returns a hash for specific types" do
+      subject.node_data_for(:custom).should be_a(Hash)
+    end
+
+    it "calls procs for default keys" do
+      subject.node_data_for('TestClass')['property'].should == 'value'
+    end
+
+    it "calls procs for renamed keys" do
+      subject.node_data_for('TestClass')['foo'].should == 'value'
+    end
+
+    it "calls custom procs" do
+      subject.node_data_for('TestClass')['bar'].should == 'value'
+    end
   end
 end

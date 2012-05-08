@@ -45,7 +45,7 @@ class TestModel
   end
 
   def fake_association
-    [0..3].map {|i| TestModel.new(i) }
+    (0..3).to_a.map {|i| TestModel.new(i) }
   end
 
   def two
