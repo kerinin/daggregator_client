@@ -29,6 +29,7 @@ describe Daggregator::Model::ClassMethods do
   end
 
   it "yields to block with builder" do
+    pending "Rspec adhering to its API"
     expect {|b| TestModel.aggregate_to(&b) }.to yield_with_args(Daggregator::Model::GraphBuilder)
   end
 end
