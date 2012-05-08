@@ -18,6 +18,7 @@ class Daggregator::Model::GraphBuilder
   end
 
   def key(key_name, args={}, &block)
+    key_name = key_name.to_s
     if not key_name
       raise ArgumentError, "You must tell me what key you want to push to"
     end
@@ -34,10 +35,11 @@ class Daggregator::Model::GraphBuilder
   end
 
   def flow_to(association_name, args={})
+    association_name = association_name.to_s
     # RM NOTE: you should probably set up identifier for the target class 
     # if it isn't already
 
     @flows[association_name] ||= []
-    @flows[association_name] << ( args[:as] || association_name )
+    @flows[association_name] << ( args[:as] || association_name ).to_s
   end
 end

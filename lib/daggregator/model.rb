@@ -7,10 +7,6 @@ module Daggregator::Model
   include RestAPI
   include Serialization
 
-  def daggregator_options
-    self.class.daggregator_options
-  end
-
   def self.included(base)
     base.extend ClassMethods
   end

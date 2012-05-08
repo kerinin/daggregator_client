@@ -44,4 +44,4 @@ DEPENDENCIES
   jeweler (~> 1.6.0)
   pry
   rest-client
-  rspec (~> 2.3.0)
+  rspec

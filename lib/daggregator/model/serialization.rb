@@ -1,8 +1,4 @@
 module Daggregator::Model::Serialization
-  def daggregator_options
-    self.class.daggregator_options
-  end
-
   def to_node_for(type)
     type = type.to_s
     {
@@ -26,6 +22,13 @@ module Daggregator::Model::Serialization
     instance_eval &self.class.daggregator_options[type].identifier_proc
   end
   
+
+  # Private Methods
+  
+  def daggregator_options
+    self.class.daggregator_options
+  end
+
   def associated_identifiers_for(type, association_name)
     type = type.to_s
     associated_types = self.class.daggregator_options[type].flows[association_name]
@@ -36,10 +39,7 @@ module Daggregator::Model::Serialization
     type = type.to_s
     data = {}
     self.class.daggregator_options[type].keys.each_pair do |key,block|
-      begin
-        data[key.to_s] = instance_eval &block
-      rescue
-      end
+      data[key.to_s] = instance_eval &block
     end
     data
   end
