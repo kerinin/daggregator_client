@@ -1,6 +1,12 @@
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'active_model'
+require 'daggregator/model'
+
 class TestModel
-  include ActiveModel::Callbacks
+  extend ActiveModel::Callbacks
   include Daggregator::Model
+
+  attr_accessor :id
 
   aggregate_to do |node|
     node.key :property_1
@@ -12,7 +18,7 @@ class TestModel
     node.flow_to :fake_association, :as => :two
   end
 
-  aggregate_to(:two) do
+  aggregate_to(:two) do |node|
     node.identifier do |test_model|
       "identifier_#{test_model.two}"
     end
@@ -26,7 +32,7 @@ class TestModel
     node.flow_to :fake_association
   end
 
-  aggregate_to("three") do
+  aggregate_to("three") do |node|
     node.identifier :identifier_three
   end
 
@@ -39,10 +45,14 @@ class TestModel
   end
 
   def fake_association
-    [0..3].map { TestModel.new }
+    [0..3].map {|i| TestModel.new(i) }
   end
 
   def two
     "two"
+  end
+
+  def initialize(id=1)
+    @id = id
   end
 end
