@@ -1,5 +1,5 @@
 class Daggregator::Model::GraphBuilder
-  attr_reader :identifier_proc, :keys, :flows
+  attr_reader :identifier_proc, :keys, :flows_to, :flows_from
 
   def initialize(type = nil)
     unless type.nil?
@@ -10,7 +10,8 @@ class Daggregator::Model::GraphBuilder
       @identifier_proc  = Proc.new {|instance| "#{instance.class.name}_#{instance.id}" }
     end
     @keys             = {}
-    @flows            = {}
+    @flows_to         = {}
+    @flows_from       = {}
   end
 
   def identifier(prefix = nil, &block)
@@ -47,7 +48,16 @@ class Daggregator::Model::GraphBuilder
     # RM NOTE: you should probably set up identifier for the target class 
     # if it isn't already
 
-    @flows[association_name] ||= []
-    @flows[association_name] << ( args[:as] || :default ).to_s
+    @flows_to[association_name] ||= []
+    @flows_to[association_name] << ( args[:as] || :default ).to_s
+  end
+
+  def flow_from(association_name, args={})
+    association_name = association_name.to_s
+    # RM NOTE: you should probably set up identifier for the target class 
+    # if it isn't already
+
+    @flows_from[association_name] ||= []
+    @flows_from[association_name] << ( args[:as] || :default ).to_s
   end
 end

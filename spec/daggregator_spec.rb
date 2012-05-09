@@ -58,15 +58,27 @@ describe Daggregator do
       end
     end
 
-    describe "put_flow" do
+    describe "put_flow_to" do
       it "calls connection" do
         @c.should_receive(:put).with('/nodes/source/flow_to/target.json')
-        subject.put_flow('source', 'target')      
+        subject.put_flow_to('source', 'target')      
       end
 
       it "accepts an arry of targets" do
         @c.should_receive(:put).with('/nodes/source/flow_to/target1+target2.json')
-        subject.put_flow('source', ['target1', 'target2'])
+        subject.put_flow_to('source', ['target1', 'target2'])
+      end
+    end
+
+    describe "put_flow_from" do
+      it "calls connection" do
+        @c.should_receive(:put).with('/nodes/target/flow_from/source.json')
+        subject.put_flow_from('target', 'source')      
+      end
+
+      it "accepts an arry of targets" do
+        @c.should_receive(:put).with('/nodes/target/flow_from/source1+source2.json')
+        subject.put_flow_from('target', ['source1', 'source2'])
       end
     end
 

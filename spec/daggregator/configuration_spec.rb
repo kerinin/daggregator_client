@@ -10,13 +10,6 @@ describe Daggregator::Configuration do
       subject { Daggregator::Configuration.new }
 
       its(:port) { should = '80' }
-      its(:get_node_cb) { should be_a(Proc) }
-      its(:get_aggregates_cb) { should be_a(Proc) }
-      its(:put_node_cb) { should be_a(Proc) }
-      its(:put_flow_cb) { should be_a(Proc) }
-      its(:delete_key_cb) { should be_a(Proc) }
-      its(:delete_flow_cb) { should be_a(Proc) }
-      its(:delete_node_cb) { should be_a(Proc) }
     end
   end
 end

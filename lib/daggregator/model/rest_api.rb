@@ -17,8 +17,10 @@ module Daggregator::Model::RestAPI
 
   def put_flows
     daggregator_options.each_key do |type|
-      targets = to_flows_for(type)
-      Daggregator.put_flow( identifier_for(type), targets) unless targets.empty?
+      targets = to_flows_to_for(type)
+      Daggregator.put_flow_to( identifier_for(type), targets) unless targets.empty?
+      sources = to_flows_from_for(type)
+      Daggregator.put_flow_from( identifier_for(type), sources) unless sources.empty?
     end
   end
 

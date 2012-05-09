@@ -46,7 +46,7 @@ describe Daggregator::Model::Serialization do
     end
   end
 
-  describe "to_flows_for" do
+  describe "to_flows_to_for" do
     before(:each) do
       TestClass.aggregate_to do |node|
         node.flow_to :associated, :as => :foo
@@ -58,11 +58,31 @@ describe Daggregator::Model::Serialization do
     subject { TestClass.new }
 
     it "includes associated" do
-      subject.to_flows_for('foo').should include('TestClass_1')
+      subject.to_flows_to_for('foo').should include('TestClass_1')
     end
 
     it "includes associated with :as" do
-      subject.to_flows_for('TestClass').should include('foo_1')
+      subject.to_flows_to_for('TestClass').should include('foo_1')
+    end
+  end
+
+  describe "to_flows_from_for" do
+    before(:each) do
+      TestClass.aggregate_to do |node|
+        node.flow_from :associated, :as => :foo
+      end
+      TestClass.aggregate_to(:foo) do |node|
+        node.flow_from :associated
+      end
+    end
+    subject { TestClass.new }
+
+    it "includes associated" do
+      subject.to_flows_from_for('foo').should include('TestClass_1')
+    end
+
+    it "includes associated with :as" do
+      subject.to_flows_from_for('TestClass').should include('foo_1')
     end
   end
 

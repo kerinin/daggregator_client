@@ -39,10 +39,17 @@ module Daggregator
       )
     end
 
-    def put_flow(source_id, target_ids)
+    def put_flow_to(source_id, target_ids)
       target_ids = Array(target_ids)
       connection.put(
         "/nodes/#{source_id}/flow_to/#{target_ids.join('+')}.json"
+      )
+    end
+
+   def put_flow_from(target_id, source_ids)
+      source_ids = Array(source_ids)
+      connection.put(
+        "/nodes/#{target_id}/flow_from/#{source_ids.join('+')}.json"
       )
     end
 
