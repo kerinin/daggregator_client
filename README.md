@@ -106,7 +106,9 @@ class User
     node.key :friends_age, :from => :age
     node.key :friends_popularity, :from => :popularity
     
-    node.flow_to :friends
+    node.flow_to :friends do                        # If a block is specified, it will be executed
+      select(:id).where('popularity > 100')         # in the association's scope and the returned value
+    end                                             # will be used
   end
 end
 ```
