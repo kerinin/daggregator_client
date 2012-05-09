@@ -7,5 +7,6 @@ module Daggregator::Model::ClassMethods
     @daggregator_options ||= {}
     daggregator_options[type] ||= Daggregator::Model::GraphBuilder.new(type)
     yield daggregator_options[type]
+    daggregator_options[type]
   end
 end

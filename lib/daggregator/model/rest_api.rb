@@ -1,7 +1,17 @@
 module Daggregator::Model::RestAPI
+  def put_neo
+    put_nodes
+    put_flows
+  end
+
+  def delete_neo
+    delete_nodes
+    delete_flows
+  end
+
   def put_nodes
     daggregator_options.each_key do |type|
-      Daggregator.put_node( to_node_for(type) )
+      Daggregator.put_node( identifier_for(type), node_data_for(type) )
     end
   end
 
