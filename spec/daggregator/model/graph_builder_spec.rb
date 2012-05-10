@@ -46,36 +46,48 @@ describe Daggregator::Model::GraphBuilder do
   describe "flow_to" do
     it "creates a new key with the passed name" do
       subject.flow_to(:foo)
-      subject.flows_to['foo'].should be_a(Array)
+      subject.flows_to['foo'].should be_a(Hash)
     end
 
     it "defaults to default" do
       # NOTE: this uses the node type named after the target's class name
       subject.flow_to(:foo)
-      subject.flows_to['foo'].should include('default')
+      subject.flows_to['foo']['types'].should include('default')
     end
 
     it "creates flow with :as" do
       subject.flow_to(:foo, :as => :bar)
-      subject.flows_to['foo'].should include('bar')
+      subject.flows_to['foo']['types'].should include('bar')
+    end
+
+    it "stores block if given" do
+      block = Proc.new { puts 'hello' }
+      subject.flow_to(:foo, &block)
+      subject.flows_to['foo']['block'].should == block
     end
   end
 
   describe "flow_from" do
     it "creates a new key with the passed name" do
       subject.flow_from(:foo)
-      subject.flows_from['foo'].should be_a(Array)
+      subject.flows_from['foo'].should be_a(Hash)
     end
 
     it "defaults to default" do
       # NOTE: this uses the node type named after the target's class name
       subject.flow_from(:foo)
-      subject.flows_from['foo'].should include('default')
+      subject.flows_from['foo']['types'].should include('default')
     end
 
     it "creates flow with :as" do
       subject.flow_from(:foo, :as => :bar)
-      subject.flows_from['foo'].should include('bar')
+      subject.flows_from['foo']['types'].should include('bar')
+    end
+
+    it "stores block if given" do
+      block = Proc.new { puts 'hello' }
+      subject.flow_from(:foo, &block)
+      subject.flows_from['foo']['block'].should == block
     end
   end
 end

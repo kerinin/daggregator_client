@@ -43,21 +43,23 @@ class Daggregator::Model::GraphBuilder
 
   # flows[association name on model] = [node type on associated]
   #
-  def flow_to(association_name, args={})
+  def flow_to(association_name, args={}, &block)
     association_name = association_name.to_s
     # RM NOTE: you should probably set up identifier for the target class 
     # if it isn't already
 
-    @flows_to[association_name] ||= []
-    @flows_to[association_name] << ( args[:as] || :default ).to_s
+    @flows_to[association_name] ||= {'types' => []}
+    @flows_to[association_name]['types'] << ( args[:as] || :default ).to_s
+    @flows_to[association_name]['block'] = block_given? ? block : Proc.new { self }
   end
 
-  def flow_from(association_name, args={})
+  def flow_from(association_name, args={}, &block)
     association_name = association_name.to_s
     # RM NOTE: you should probably set up identifier for the target class 
     # if it isn't already
 
-    @flows_from[association_name] ||= []
-    @flows_from[association_name] << ( args[:as] || :default ).to_s
+    @flows_from[association_name] ||= {'types' => []}
+    @flows_from[association_name]['types'] << ( args[:as] || :default ).to_s
+    @flows_from[association_name]['block'] = block_given? ? block : Proc.new { self }
   end
 end
