@@ -38,7 +38,7 @@ module Daggregator::Model::Serialization
     if type == 'default'
       type = self.class.name
     end
-    instance_eval &self.class.daggregator_options[type].identifier_proc
+    instance_eval &daggregator_options[type].identifier_proc
   end
   
 
@@ -55,7 +55,7 @@ module Daggregator::Model::Serialization
   def node_data_for(type)
     type = type.to_s
     data = {}
-    self.class.daggregator_options[type].keys.each_pair do |key,block|
+    daggregator_options[type].keys.each_pair do |key,block|
       data[key.to_s] = instance_eval &block
     end
     data
