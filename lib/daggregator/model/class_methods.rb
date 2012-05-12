@@ -4,7 +4,7 @@ module Daggregator::Model::ClassMethods
   def aggregate_to(type=self.name)
     type = type.to_s
 
-    @daggregator_options ||= {}
+    @@daggregator_options ||= {}
     daggregator_options[type] ||= Daggregator::Model::GraphBuilder.new(type)
     yield daggregator_options[type]
     daggregator_options[type]
