@@ -43,7 +43,7 @@ module Daggregator
       target_ids = Array(target_ids)
       # For large arrays, the URL becomes too long to be processed, so we'll
       # split this into multiple calls
-      target_ids.each_batch(10) do |batch_targets|
+      target_ids.each_slice(10) do |batch_targets|
         connection.put(
           "/nodes/#{source_id}/flow_to/#{batch_targets.join('+')}.json"
         )
@@ -52,7 +52,7 @@ module Daggregator
 
    def put_flow_from(target_id, source_ids)
       source_ids = Array(source_ids)
-      source_ids.each_batch(10) do |batch_sources|
+      source_ids.each_slice(10) do |batch_sources|
         connection.put(
           "/nodes/#{target_id}/flow_from/#{batch_sources.join('+')}.json"
         )
