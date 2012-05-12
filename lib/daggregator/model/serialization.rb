@@ -49,7 +49,7 @@ module Daggregator::Model::Serialization
   end
 
   def associated_identifiers_for(associated, related_types)
-    related_types.map {|type| associated.identifier_for(type) }
+    related_types.map {|type| associated.try(:identifier_for, type) }.compact
   end
 
   def node_data_for(type)
