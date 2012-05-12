@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'daggregator/model'
 require 'test_model'
 
-describe Daggregator::Model::ClassMethods do
+describe Daggregator::Model::RestAPI do
   describe "put_nodes" do
     before(:each) do
       TestModel.aggregate_to do |node|

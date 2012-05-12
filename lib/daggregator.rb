@@ -25,10 +25,11 @@ module Daggregator
       )
     end
 
-    def get_aggregates(node_id, function, keys)
+    def get_aggregates(node_id, function, keys, querystring_params={})
       keys = Array(keys)
+      querystring = querystring_params.to_a.map {|pair| "#{pair.first}=#{pair.last}"}.join('&')
       connection.get(
-        "/nodes/#{node_id}/#{ensure_function_exists(function)}/#{keys.join('+')}.json"
+        "/nodes/#{node_id}/#{ensure_function_exists(function)}/#{keys.join('+')}.json#{querystring.empty? ? '' : "?#{querystring}"}"
       )
     end
 
@@ -84,7 +85,7 @@ module Daggregator
     end
 
     def ensure_function_exists(function)
-      unless [:sum, :count].include? function.to_sym
+      unless [:sum, :count, :distribution, :bin_count].include? function.to_sym
         raise Daggregator::UnknownAggregationFunction 
       else
         function

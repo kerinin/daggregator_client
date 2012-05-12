@@ -44,6 +44,11 @@ describe Daggregator do
         @c.should_receive(:get).with('/nodes/foo/sum/bar+baz.json')
         subject.get_aggregates(:foo, :sum, [:bar, :baz])
       end
+
+      it "adds querystring" do
+        @c.should_receive(:get).with('/nodes/foo/bin_count/bar+baz.json?key1=value1&key2=value2')
+        subject.get_aggregates(:foo, :bin_count, [:bar, :baz], {:key1 => 'value1', :key2 => 'value2'})
+      end
     end
 
     describe "put_node" do

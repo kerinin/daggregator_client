@@ -1,4 +1,4 @@
-class TestModel
+class TestModel < Object
   attr_accessor :id
   include Daggregator::Model
 

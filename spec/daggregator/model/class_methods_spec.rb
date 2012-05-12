@@ -3,7 +3,7 @@ require 'daggregator/model'
 
 describe Daggregator::Model::ClassMethods do
   before(:each) do
-    class TestModel
+    class TestModel < Object
       extend Daggregator::Model::ClassMethods
     end
   end

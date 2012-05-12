@@ -3,7 +3,7 @@ require 'daggregator/model'
 
 describe Daggregator::Model::Serialization do
   before(:each) do
-    class TestClass
+    class TestClass < Object
       attr_accessor :id
       include Daggregator::Model
 
